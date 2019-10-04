@@ -21,7 +21,7 @@ from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 
-TIPICO_URL = "https://www.tipico.de/"
+TIPICO_URL = "https://www.tipico.com/"
 API_KEY = ""
 API_HOST = "football-prediction-api.p.rapidapi.com"
 PRED_PATH = "/tmp/"
