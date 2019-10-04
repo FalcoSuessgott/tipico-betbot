@@ -181,9 +181,10 @@ def place_bet_routine(driver, data, wager, minimum):
 	)
 	print(bet_output)
 
-	if data['odds'][data['prediction']] <= float(minimum):
-		print("Bet does not have the specified minimum quote. Skipping.")
-		return
+	if minimum is not None:
+		if data['odds'][data['prediction']] <= float(minimum):
+			print("Bet does not have the specified minimum quote. Skipping.")
+			return
 
 	nation_id = get_nation(driver, data['competition_cluster'])
 
