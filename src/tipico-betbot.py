@@ -145,7 +145,6 @@ def fetch_bet_predictions():
 		write_predictions_to_file(response.text, PRED_PATH)
 		with open("/tmp/pred.json") as outfile:
 			data = json.load(outfile)
-			print("Wrote predictions to /tmp/pred.json")
 		print("Gathered %s predictions." % len(data['data']))
 		return data
 	except Exception as e:
@@ -157,14 +156,10 @@ def fetch_bet_predictions():
 def write_predictions_to_file(data, path):
 	""" Writes data to specified path"""
 
-	now = datetime.now()
-	dt_string = now.strftime("%d%m%Y_%H%M%S")
-	f = open(path + "pred.json", "w")
-
 	try:
-		print("Writing predictions to " + path + "predictions_" + dt_string)
+		f = open(path + "pred.json", "w")
 		f.write(str(data))
-		print("Successfully created file.")
+		print("Wrote predictions to /tmp/pred.json")
 	except Exception as e:
 		print("Something went wrong while writing to file.")
 		print(e)
