@@ -25,7 +25,7 @@ Also you need to register at [Rapid-API](https://rapidapi.com/boggio-analytics/a
 ```
 pip install -r requirements.txt
 ```
-
+Also you need firefox installed (its best you use your distributions package manager
 ## Installation
 ```shell script
 git clone git@github.com:FalcoSuessgott/tipico-betbot.git
