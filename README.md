@@ -21,15 +21,15 @@ Also you need to register at [Rapid-API](https://rapidapi.com/boggio-analytics/a
  
 ## Installation
 ```shell script
-git clone https://www.github.com/FalcoSuessgott/tipico-betbot
+git clone git@github.com:FalcoSuessgott/tipico-betbot.git
 cd tipico-betbot
 ```
 
 ## Configuration
-In `tipico-betbot.py`, specify the token, that you have received from Rapid-API.
+In `src/tipico-betbot.py`, specify the token, that you have received from Rapid-API.
 
 ```python
-API_KEY = "23da3be5b7msh1cee41ef14ca891p1f7711jsncc9ae84efe91"
+API_KEY = "121313223"
 ``` 
 
 ## Usage
