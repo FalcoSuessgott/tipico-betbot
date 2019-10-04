@@ -1,3 +1,2 @@
 selenium==3.141.0
 jellyfish==0.6.1
-requests==2.18.4
