@@ -23,8 +23,9 @@ Also you need to register at [Rapid-API](https://rapidapi.com/boggio-analytics/a
  
 ## Requirements
 ```
-pip install jellyfish
+pip install -r requirements.txt
 ```
+
 ## Installation
 ```shell script
 git clone git@github.com:FalcoSuessgott/tipico-betbot.git
