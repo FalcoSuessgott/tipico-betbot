@@ -4,6 +4,8 @@ Tipico betbot, which fetches football predictions from [boggio-analytics](https:
 Boggio-Analytics claims to have a success rate of 70-75% which should, theoretically end in a certain period, in profit.
 
 # Note
+Tested with `python3.6`.
+
 This tool is still under development, I am not responsible for your money loss.
 
 # Features
@@ -38,3 +40,6 @@ Run the bot, with 2.50€ wage per bet in headless mode (a browser window will p
 ```python
 python tipico-betbot.py -u TIPICO_EMAIL -p TIPICO_PASSWORD -W 2.50 -H
 ```
+
+# ToDo's
+* check cli options while starting script

@@ -34,10 +34,10 @@ def parseArgs():
 	parser = argparse.ArgumentParser()
 	parser.add_argument("-u", "--username", dest="username", action="store", help="E-Mail")
 	parser.add_argument("-p", "--password", dest="password", action="store", help="Password")
-	parser.add_argument("-w", "--wager", dest="wager", action="store", help="Wager per bet")
-	parser.add_argument("-a", "--amount", dest="amount", action="store", help="Amount of bets")
-	parser.add_argument("-M", "--minimum-quote", dest="amount", action="store", help="Minimum quote, fore example \"1.50\"")
-	parser.add_argument("-H", "--headless", dest="headless", action="store", help="Opens Selenium in headless mode.")
+	parser.add_argument("-w", "--wager", dest="wager", action="store", type=float, help="Wager per bet")
+	parser.add_argument("-a", "--amount", dest="amount", action="store", type=int, help="Amount of bets")
+	parser.add_argument("-M", "--minimum-quote", dest="minimum", action="store", type=float, help="Minimum quote, fore example \"1.50\"")
+	parser.add_argument("-H", "--headless", dest="headless", action="store_true", help="Opens Selenium in headless mode.")
 
 	if len(sys.argv) == 1:
 		print("No arguments were specified.\nExiting.")
@@ -45,6 +45,10 @@ def parseArgs():
 		sys.exit(1)
 
 	parser = parser.parse_args()
+
+	if API_KEY is "":
+		print("Please specify \"API_KEY\" with the token from %s. Exiting." % API_HOST)
+		sys.exit(1)
 
 	if not parser.password or not parser.username:
 		print("Username or password missing.")
@@ -73,17 +77,18 @@ def parseArgs():
 
 		i = 0
 		placed_bets = 0
+
 		for p in data['data']:
 			i += 1
 			driver.refresh()
 			print("[%s/%s] " % (i, len(data['data'])), end='')
-			bet = place_bet_routine(driver, p, parser.wager)
+			bet = place_bet_routine(driver, p, parser.wager, parser.minimum)
 
 			if bet is not None:
 				mail_content += bet
 				placed_bets += 1
-				if placed_bets == parser.amount:
-					print("Placed %d bets. Exiting." % parser.amount)
+				if placed_bets == int(parser.amount):
+					print("Placed %d bets. Exiting." % placed_bets)
 					send_notification_mail(MAIL, MAIL_PW, parser.username, mail_content)
 					sys.exit(0)
 
@@ -140,6 +145,7 @@ def fetch_bet_predictions():
 		write_predictions_to_file(response.text, PRED_PATH)
 		with open("/tmp/pred.json") as outfile:
 			data = json.load(outfile)
+			print("Wrote predictions to /tmp/pred.json")
 		print("Gathered %s predictions." % len(data['data']))
 		return data
 	except Exception as e:
@@ -167,7 +173,7 @@ def write_predictions_to_file(data, path):
 		f.close()
 
 
-def place_bet_routine(driver, data, wager):
+def place_bet_routine(driver, data, wager, minimum):
 	""" places a single Bet"""
 
 	bet_output = "Country: %s, Competition: %s, %s vs. %s, Odds: %s, Prediction: %s" % (
@@ -179,6 +185,10 @@ def place_bet_routine(driver, data, wager):
 		data['prediction']
 	)
 	print(bet_output)
+
+	if data['odds'][data['prediction']] <= float(minimum):
+		print("Bet does not have the specified minimum quote. Skipping.")
+		return
 
 	nation_id = get_nation(driver, data['competition_cluster'])
 
@@ -321,25 +331,25 @@ def set_prediction_to_game(event, bet, eventNumber):
 
 	try:
 		if bet == "1":
-			print("Placed option \"1\" for this event.")
+			print("Placed bet \"1\" for this event.")
 			quotes[0].click()
 		elif bet == "X":
-			print("Placed option \"X\" for this event.")
+			print("Placed bet \"X\" for this event.")
 			quotes[1].click()
 		elif bet == "2":
-			print("Placed option \"2\" for this event.")
+			print("Placed bet \"2\" for this event.")
 			quotes[2].click()
 		elif bet == "1X":
-			print("Placed option \"1X\" for this event.")
+			print("Placed bet \"1X\" for this event.")
 			quotes[3].click()
 		elif bet == "12":
-			print("Placed option \"12\" for this event.")
+			print("Placed bet \"12\" for this event.")
 			quotes[4].click()
 		elif bet == "X2":
-			print("Placed option \"X2\" for this event.")
+			print("Placed bet \"X2\" for this event.")
 			quotes[5].click()
 		else:
-			print("Invalid bet option")
+			print("Invalid bet.")
 	except Exception:
 		pass
 
@@ -354,8 +364,7 @@ def place_bet_for_game(driver, wager):
 		driver.find_element_by_id("editorForm:reactionRepeat:0:cmdReaction").click()
 		print("Bet placed.")
 	except Exception:
-		print("Something went wrong while placing bet.")
-
+		pass
 
 def send_notification_mail(user, pwd, recipient, body):
 	""" sends an email """
