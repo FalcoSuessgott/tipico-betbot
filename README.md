@@ -21,6 +21,10 @@ In order to use this tool, follow these instructions:
 Of course you will need a [Tipico](https://www.tipico.de/en/online-sports-betting/)-Account.
 Also you need to register at [Rapid-API](https://rapidapi.com/boggio-analytics/api/football-prediction), so that you can fetch the predictions (its free, but you will need a credit-card).
  
+## Requirements
+```
+pip install jellyfish
+```
 ## Installation
 ```shell script
 git clone git@github.com:FalcoSuessgott/tipico-betbot.git
@@ -35,7 +39,7 @@ API_KEY = "121313223"
 ``` 
 
 ## Usage
-Run the bot, with 2.50€ wage per bet in headless mode (a browser window will popup and displays you the action that are going to be made))
+Run the bot, with 2.50€ wage per bet in headless mode (a browser window will popup and displays you the action that are going to be made)
 
 ```python
 python tipico-betbot.py -u TIPICO_EMAIL -p TIPICO_PASSWORD -W 2.50 -H
